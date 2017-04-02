@@ -1,0 +1,101 @@
+extends ../template
+
+block styles
+	link(rel='stylesheet', href='/codemirror/lib/codemirror.css')
+	link(rel='stylesheet', href='/codemirror/doc/docs.css')
+	link(rel='stylesheet', href='/codemirror/addon/hint/show-hint.css')
+	script(src='/codemirror/lib/codemirror.js')
+	script(src='/codemirror/mode/clike/clike.js')
+	script(src='/codemirror/addon/edit/matchbrackets.js')
+	script(src='/codemirror/addon/hint/show-hint.js')
+	script(src='/codemirror/addon/hint/anyword-hint.js')
+	style.
+		#tasks>nav>ul>li:nth-child(2n+1) {
+		background-color: #1AA194;
+		}
+block jumbotron
+	.jumbotron
+		.container
+			h1.display-3 {{title}}
+
+block container
+	.container.white
+		.row
+			.col-md-12(style='padding-right: 45px !important; padding-left: 45px !important;')
+				span#tasks
+					| {{tasks}}
+				hr
+				form(enctype='multipart/form-data', action='/submission.php', method='POST', onsubmit='return validateForm()')
+					.form-group
+						label(for='email') Email address
+						input.form-control(type='email', minlength='1', required='', name='email', value='{{email}}', readonly='')
+						small#emailHelp.form-text.text-muted We'll never share your email with anyone else.
+					.form-group
+						label(for='task') Task
+						select.form-control(name='task') {{tasksoption}}
+					fieldset
+						legend Submit:
+						.form-group
+							label(for='sourcecode') your source code
+							div(style='border: 2pt solid #777;')
+								textarea#sourcecode.form-control(name='sourcecode', rows='20', autocorrect='off', autocapitalize='off', spellcheck='false', tabindex='0', wrap='on', style='border: 1px solid black;')
+						.form-group
+							label.control-label(for='uploadedfile') Source code file
+							input#uploadedfile(type='file')
+							input.form-control(readonly='', placeholder='Browse...', type='text')
+					.form-group
+						label(for='lang') Language
+						select#lang.form-control(name='lang', onchange='change();')
+					input(type='hidden', name='contest', value='{{contestid}}')
+					button.btn.btn-raised.btn-success(type='submit') Submit
+				#test(style='display:none;')  
+			.col-md-12(style='padding-right: 45px !important; padding-left: 45px !important;')
+				| {{submits}}
+block js
+	script.
+		function validateForm() {
+		var x = document.forms[0]["email"].value;
+		if (x == "") {
+		alert("Please, login!");
+		return false;
+		}
+		}
+		var editor;
+		var modes = {
+		js: "javascript",
+		java: "text/x-java",
+		c: "text/x-csrc",
+		cpp: "text/x-c++src",
+		cs: "text/x-csharp",
+		php: "application/x-httpsd-php",
+		py: "text/x-python",
+		cy: "text/x-cython",
+		hs: "text/x-haskell",
+		ts: "application/typescript"
+		};
+		var names = {{langs}};
+		function change ()
+		{
+		var e = document.getElementById("lang");
+		var value = e.options[e.selectedIndex].value;
+		var text = e.options[e.selectedIndex].text;
+		document.getElementById ("test").innerHTML += "change (): value = " + value + ", text = " + text + ", mode [value]: " + modes [value] + "<br>";
+		editor.setOption("mode", modes [value]);
+		CodeMirror.autoLoadMode(editor, modes[value]);
+		}
+		window.onload = function() {
+		for (var mode in names)
+		{
+		document.getElementById ("test").innerHTML += mode + " -> " + modes [mode] + "<br>";
+		document.getElementById ("lang").innerHTML += "<option value='" + mode + "'>" + names [mode] + "</option>";
+		}
+		CodeMirror.modeURL = "/codemirror/mode/%N/%N.js";
+		editor = CodeMirror.fromTextArea(document.getElementById("sourcecode"), {
+		mode: "text/x-c++src",
+		extraKeys: {"Ctrl-Space": "autocomplete"},
+		theme: "default",
+		lineNumbers: true,
+		lineWrapping: true
+		});
+		};
+

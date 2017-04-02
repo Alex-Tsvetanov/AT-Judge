@@ -21,6 +21,7 @@ html(lang='en')
 		link(rel='stylesheet', href='/css/ripples.min.css')
 		link(rel='stylesheet', href='/css/snackbar.min.css')
 		link(rel='stylesheet', href='/css/extension.css')
+		link(rel='stylesheet', href='/d9757859af.css')
 		block styles
 		
 	body(cz-shortcut-listen="true")
@@ -60,11 +61,47 @@ html(lang='en')
 		block container
 			
 		footer
-			center 
-				p 
-					| <?php 
-					| require ($_SERVER["DOCUMENT_ROOT"] . "/content/copyrights.php");
-					| ?>
+			.container.container-holder
+				ul.row
+					li.col-md-3.col-sm-12.col-xs-12.footer-list-wrapper
+						h3.list-title TechEdu ++
+						hr
+						ul.footer-list
+							li
+								a(href='//infocourse.techedu.cf/aboutus.php') About us
+							li
+								a(href='//infocourse.techedu.cf/aboutus.php#trainers') Trainers
+					li.col-md-3.col-sm-12.col-xs-12.footer-list-wrapper
+						h3.list-title Courses &amp; Seminars
+						hr
+						ul.footer-list
+							li
+								a(href='//infocourse.techedu.cf/trainings/tracks') Tracks
+							li
+								a(href='//infocourse.techedu.cf/trainings/courses') Courses
+							li
+								a(href='//infocourse.techedu.cf/trainings/seminars') Seminars
+					li.col-md-3.col-sm-12.col-xs-12.footer-list-wrapper
+						h3.list-title Our partners
+						hr
+						ul.footer-list
+							li
+								a(target='_blank', href='https://delta.bg/') Delta.BG
+					li.col-md-3.col-sm-12.col-xs-12.footer-list-wrapper
+						ul.social
+							li
+								a.icon-btn(href='https://facebook.com/TechEducationGroup/', target='_blank')
+									span.fa.fa-2x.fa-facebook
+							li
+								a.icon-btn(href='https://www.youtube.com/channel/UCT1g_MbzP5UJauAqmvNq1aQ', target='_blank')
+									span.fa.fa-2x.fa-youtube-play
+							li
+								a.icon-btn(href='http://github.com/TechEducationPlusPlus/', target='_blank')
+									span.fa.fa-2x.fa-github
+						.all-rights-reserved
+							p &copy; 2017 TechEdu ++
+							p All Rights Reserved.
+							p TechEdu ++ Student System
 
 		script(src='/js/jquery.min.js')
 		script(src="/js/tether.min.js")
@@ -75,3 +112,4 @@ html(lang='en')
 		script(src="/js/jquery.nouislider.min.js")
 		script(src='/js/jquery.cookie.js')
 		script(src='/js/main.js')
+		block js

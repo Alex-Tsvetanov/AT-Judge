@@ -1,41 +1,161 @@
 a.normal{color:#373a3c;}
 a.normal:visited{color:#373a3c;}
 a.normal:hover{color:#373a3c;}
-.col-md-3>h2 {
+.course-item {
+	background-color: #fff; 
+	box-shadow: 0 0 10px #808080; 
+	margin: 10px; 
+	padding: 1px 10px 1px; 
+	border-radius: 5px;
+	position: relative;
+}
+.course-item.col-md-4.equal h2 {
+	height: 50px;
+}
+.course-item.col-md-4.equalBig h2 {
+	height: 140px;
+}
+.course-item .right-arrow {
+	display: inline-block;
+	width: 22px;
+	height: 22px;
+	position: absolute;
+	top: 50%;
+	right: 14px;
+	margin-top: -11px;
+	margin-left: -36px;
+	background-color: white;
+	color: #009688;
+	border-radius: 100%;
+	font-size: 1em;
+}
+.course-item:hover {
+	background-color: #009688;
+	color: white !important;
+	box-shadow: 0 0 10px #808080; 
+	margin: 10px; 
+	padding: 1px 10px 1px; 
+	border-radius: 5px;
+	position: relative;
+}
+.course-item:hover .right-arrow {
+	display: inline-block;
+	width: 22px;
+	height: 22px;
+	position: absolute;
+	top: 50%;
+	right: 14px;
+	margin-top: -11px;
+	margin-left: -36px;
+	color: white;
+	background-color: #009688;
+	border-radius: 100%;
+	font-size: 1em;
+}
+.course-item:hover .btn-success {
+	background-color: rgba(255,255,255,.84) !important;
+	color: #009688;
+}
+.course-item:hover .btn-success:hover {
+	background-color: rgba(255,255,255,.84) !important;
+	color: #009688;
+}
+.course-item:hover .btn-success:focus {
+	background-color: rgba(255,255,255,.84) !important;
+	color: #009688;
+}
+.course-item:hover .btn-success:active {
+	background-color: rgba(255,255,255,.84) !important;
+	color: #009688;
+}
+.course-item:hover .btn-default.active {
+	background-color: #e6e6e6;
+	border-color: #adadad;
+}
+.course-item:hover .btn-success:hover {
+	background-color: #e6e6e6;
+	border-color: #adadad;
+}
+.course-item:hover .btn-success:focus {
+	background-color: #e6e6e6;
+	border-color: #adadad;
+}
+.course-item:hover .btn-success:active {
+	background-color: rgba(255,255,255,.84) !important;
+	color: #009688;
+}
+.course-item.col-md-3>h2 {
 	height: 100px;
 }
-.col-md-3 {
+.course-item.col-md-3 {
 	height: 245px;
 }
-.col-md-4 {
-	border-radius: 5px !important;
-	box-shadow: 0 0 10px #808080; margin: 10px; padding: 1px 10px 1px; 
+.course-item.col-md-4 {
 }
-.col-md-4 h2 {
+.course-item.col-md-4 h2 {
 	font-weight: bold;
 }
-footer {
-	color: gray;
-	bottom: 0px;
-	position: static;
-	width: 100%;
-	background-color: transparent;
-}
 .jumbotron {
-	background-image: url('/maia.png');
+	background-image: url("/maia.png");
+	height: 500px;
 	color: white;
 }
-.btn.btn-success, .btn.btn-success:hover, .btn.btn-success:focus  {
-	background-color: #009688 !important;
-	margin-right: 10px;
-}
-
 body {
 	background-color: #DDD !important;
 }
 label {
 	color: #777!important;
 }
-.container>.row {
-	background-color: white;
+footer {
+	color: white;
+	bottom: 0px;
+	position: static;
+	width: 100%;
+	/*background-color: transparent;*/
+	padding: 45px 0;
+	background-color: #009688;
+}
+.btn.btn-success  {
+	background-color: #009688 !important;
+}
+ul.row li {
+    list-style: none;
+	color: inherit !important;
+}
+ul.row a {
+	text-decoration: none;
+	color: inherit !important;
+}
+.list-title {
+	color: white;
+}
+ul.row {
+	color: inherit !important;
+}
+ul.footer-list {
+	margin: 0;
+	padding: 0;
+}
+ul.social {
+	margin: 0;
+	padding: 0;
+	margin-bottom: 17px;
+	list-style: none;
+	content: '';
+	display: table;
+	clear: both;
+}
+ul.social li {
+	display: inline;
+    list-style: none;
+	padding: 5px 5px 5px 5px;
+}
+.container.container-holder {
+	background-color: transparent !important;
+}
+.navbar {
+	margin-bottom: 0px !important;
+}
+.white {
+	background-color: white !important;
 }
