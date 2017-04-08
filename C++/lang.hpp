@@ -22,6 +22,13 @@ map <string, function <string(string)> > langs = {
 			return "";
 		}
 	},
+	{"js", 
+	
+		[](string path)
+		{
+			return "";
+		}
+	},
 };
 
 map <string, function <string(string)> > langs_exec = {
@@ -44,6 +51,13 @@ map <string, function <string(string)> > langs_exec = {
 		[](string path)
 		{
 			return "python source.py";
+		}
+	},
+	{"js", 
+	
+		[](string path)
+		{
+			return "node source.js";
 		}
 	},
 };
