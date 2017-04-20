@@ -1,11 +1,15 @@
 # AT Judge Wiki
 1. Installation
 	1. Dependecies
+		```
+		PHP, MySQL, G++
+		```
 	2. DataBase
+		DataBase is MySQL
+
 	3. Docker image
 	4. Judge
-2. Running
-	
+2. Running	
 3. Usage
 	1. Add new task
 	2. Add new checker
