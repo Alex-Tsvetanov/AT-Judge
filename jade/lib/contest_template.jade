@@ -1,6 +1,6 @@
 extends ../template
 
-block styles
+block styles_prev
 	link(rel='stylesheet', href='/codemirror/lib/codemirror.css')
 	link(rel='stylesheet', href='/codemirror/doc/docs.css')
 	link(rel='stylesheet', href='/codemirror/addon/hint/show-hint.css')
@@ -9,6 +9,7 @@ block styles
 	script(src='/codemirror/addon/edit/matchbrackets.js')
 	script(src='/codemirror/addon/hint/show-hint.js')
 	script(src='/codemirror/addon/hint/anyword-hint.js')
+block styles
 	style.
 		#tasks>nav>ul>li:nth-child(2n+1) {
 		background-color: #1AA194;
@@ -16,7 +17,7 @@ block styles
 	
 	link(rel='stylesheet', href='//fonts.googleapis.com/css?family=Roboto:300,400,500,700')
 block jumbotron
-	.jumbotron
+	.jumbotron.none
 		.container
 			h1.display-3 {{title}}
 
@@ -41,7 +42,7 @@ block container
 							label(for='sourcecode') your source code
 							div(style='border: 2pt solid #777;')
 								textarea#sourcecode.form-control(name='sourcecode', rows='20', autocorrect='off', autocapitalize='off', spellcheck='false', tabindex='0', wrap='on', style='border: 1px solid black;')
-						.form-group
+						//.form-group
 							label.control-label(for='uploadedfile') Source code file
 							input#uploadedfile(type='file')
 							input.form-control(readonly='', placeholder='Browse...', type='text')

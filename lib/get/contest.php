@@ -15,7 +15,7 @@
 		$sql = "SELECT * FROM Contests WHERE `Link`=\"" . $_SERVER["REQUEST_URI"] . "\"";
 		$result = $conn->query($sql);
 
-		if ($result->num_rows == 1) 
+		if ($result->num_rows == 1 and isset($_SESSION["name"])) 
 		{
 			$row = $result->fetch_assoc ();
 			
@@ -33,9 +33,9 @@
 			$langs = $row["Langs"];
 			
 			$html_code = implode ('', file ($_SERVER["DOCUMENT_ROOT"] . '/lib/contest_template.php'));
-			if (isset ($_COOKIE["name"]))
-				$html_code = str_replace ('Hi', 'Hi, ' . $_COOKIE["name"], $html_code);
-			$html_code = str_replace ('{{email}}', $_COOKIE["email"], $html_code);
+			if (isset ($_SESSION["name"]))
+				$html_code = str_replace ('Hi', 'Hi, ' . $_SESSION["name"], $html_code);
+			$html_code = str_replace ('{{email}}', $_SESSION["email"], $html_code);
 			$html_code = str_replace ('{{title}}', $row["Name"], $html_code);
 			$html_code = str_replace ('{{tasks}}', $taskbar, $html_code);
 			$html_code = str_replace ('{{tasksoption}}', $tasksoption, $html_code);
@@ -54,7 +54,9 @@
 		} 
 		else
 		{
-			echo "Contest not found or ID is not unique";
+			$html_code = implode ('', file ($_SERVER["DOCUMENT_ROOT"] . '/lib/invalide_page.php'));
+			echo $html_code;
+			unset($html_code);
 			return ;
 		}
 	}

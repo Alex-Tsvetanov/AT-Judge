@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6
+-- version 4.7.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 09, 2017 at 08:08 PM
--- Server version: 10.1.21-MariaDB
--- PHP Version: 7.1.2
+-- Generation Time: Jul 03, 2017 at 12:58 PM
+-- Server version: 10.1.24-MariaDB
+-- PHP Version: 7.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -72,17 +74,19 @@ CREATE TABLE `Contests` (
   `Tasks` text NOT NULL,
   `Langs` text NOT NULL,
   `MaxPoints` text NOT NULL,
-  `Certify` tinyint(2) NOT NULL DEFAULT '0'
+  `Certify` tinyint(2) NOT NULL DEFAULT '0',
+  `Homework` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `Contests`
 --
 
-INSERT INTO `Contests` (`ID`, `Name`, `Link`, `Tasks`, `Langs`, `MaxPoints`, `Certify`) VALUES
-('1', 'I/O Stream :: C++', '/contests/1', '{\"Hello, C++\": 1}', '{\"cpp\": \"C++\", \"py\": \"Python\"}', '100', 0),
-('2', 'First Certificate :: C++', '/contests/2', '{\"Hello, C++\": 1}', '{\"cpp\": \"C++\"}', '100', 1),
-('3', '2017-02-28 C group', '/contests/3', '{\"suma\": 2, \"cross\": 3, \"parallelogram\": 4}', '{\"cpp\": \"C++\"}', '300', 1);
+INSERT INTO `Contests` (`ID`, `Name`, `Link`, `Tasks`, `Langs`, `MaxPoints`, `Certify`, `Homework`) VALUES
+('1', 'I/O Stream :: C++', '/contests/1', '{\"Hello, C++\": 1}', '{\"cpp\": \"C++\", \"py\": \"Python\"}', '100', 0, 1),
+('2', 'First Certificate :: C++', '/contests/2', '{\"Hello, C++\": 1}', '{\"cpp\": \"C++\"}', '100', 1, 0),
+('3', '2017-02-28 C group', '/contests/3', '{\"suma\": 2, \"cross\": 3, \"parallelogram\": 4}', '{\"cpp\": \"C++\"}', '300', 1, 0),
+('513d5a37d248cba5bde73232a9098cd0', 'Name of the contest', '/contests/513d5a37d248cba5bde73232a9098cd0', '{}', '[]', '100', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -121,7 +125,8 @@ CREATE TABLE `QuizResults` (
 --
 
 INSERT INTO `QuizResults` (`UserID`, `QuizID`, `Result`) VALUES
-('alex@techedu.cf', '1', '1');
+('alex@techedu.cf', '1', '1'),
+('commision@admin.vt', '1', '1');
 
 -- --------------------------------------------------------
 
@@ -160,10 +165,13 @@ CREATE TABLE `Submissions` (
   `Lang` tinytext NOT NULL,
   `Points` float DEFAULT NULL,
   `Log` text NOT NULL,
-  `CompileLog` text NOT NULL
+  `CompileLog` text NOT NULL,
+  `IsEvaluating` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-ALTER TABLE `Submissions` ADD `IsEvaluating` BOOLEAN NOT NULL AFTER `CompileLog`;
+--
+-- Dumping data for table `Submissions`
+--
 
 -- --------------------------------------------------------
 
@@ -172,7 +180,7 @@ ALTER TABLE `Submissions` ADD `IsEvaluating` BOOLEAN NOT NULL AFTER `CompileLog`
 --
 
 CREATE TABLE `Tasks` (
-  `ID` text NOT NULL,
+  `ID` int(11) NOT NULL,
   `Name` text NOT NULL,
   `DescriptionLink` text NOT NULL,
   `TestsLink` text NOT NULL,
@@ -190,39 +198,11 @@ CREATE TABLE `Tasks` (
 --
 
 INSERT INTO `Tasks` (`ID`, `Name`, `DescriptionLink`, `TestsLink`, `Input`, `Output`, `Checker`, `StarNotation`, `MaxPoints`, `TL`, `ML`) VALUES
-('1', 'Hello, C++', 'https://github.com/TechEducationPlusPlus/Tasks/blob/master/C%2B%2B/IO%20Stream/Hello_C%2B%2B/README.md', 'https://raw.githubusercontent.com/TechEducationPlusPlus/Tasks/master/C%2B%2B/IO%20Stream/Hello_C%2B%2B/tests/', 'hello.*.in', 'hello.*.sol', 'diff', '01', '100', '0.1s', '256M'),
-('2', 
-	'Suma', 
-	'https://github.com/TechEducationPlusPlus/Tasks/blob/master/C%2B%2B/2017-02-28-tests%26authors-C/1-suma/author/suma.pdf',
-	'https://raw.githubusercontent.com/TechEducationPlusPlus/Tasks/master/C%2B%2B/2017-02-28-tests%26authors-C/1-suma/tests/', 
-	'suma.*.in', 'suma.*.sol', 
-	'diff', 
-	'01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20', 
-	'100', 
-	'1s', 
-	'256M'),
-('3', 
-	'Cross', 
-	'https://github.com/TechEducationPlusPlus/Tasks/blob/master/C%2B%2B/2017-02-28-tests%26authors-C/2-cross/author/cross-bg.pdf',
-	'https://raw.githubusercontent.com/TechEducationPlusPlus/Tasks/master/C%2B%2B/2017-02-28-tests%26authors-C/2-cross/tests/', 
-	'cross.*.in', 'cross.*.sol', 
-	'diff', 
-	'01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25', 
-	'100', 
-	'1s', 
-	'256M'),
-('4', 
-	'Parallelogram', 
-	'https://github.com/TechEducationPlusPlus/Tasks/blob/master/C%2B%2B/2017-02-28-tests%26authors-C/3-parallelogram/author/parallelogram-bg.pdf',
-	'https://raw.githubusercontent.com/TechEducationPlusPlus/Tasks/master/C%2B%2B/2017-02-28-tests%26authors-C/3-parallelogram/tests/', 
-	'parallelogram.*.in', 'parallelogram.*.sol', 
-	'diff', 
-	'01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20', 
-	'100', 
-	'1s', 
-	'256M')
+(1, 'Hello, C++', 'https://github.com/TechEducationPlusPlus/Tasks/blob/master/C%2B%2B/IO%20Stream/Hello_C%2B%2B/README.md', 'https://raw.githubusercontent.com/TechEducationPlusPlus/Tasks/master/C%2B%2B/IO%20Stream/Hello_C%2B%2B/tests/', 'hello.*.in', 'hello.*.sol', 'diff', '01', '100', '0.1s', '256M'),
+(2, 'Suma', 'https://github.com/TechEducationPlusPlus/Tasks/blob/master/C%2B%2B/2017-02-28-tests%26authors-C/1-suma/author/suma.pdf', 'https://raw.githubusercontent.com/TechEducationPlusPlus/Tasks/master/C%2B%2B/2017-02-28-tests%26authors-C/1-suma/tests/', 'suma.*.in', 'suma.*.sol', 'diff', '01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20', '100', '1s', '256M'),
+(3, 'Cross', 'https://github.com/TechEducationPlusPlus/Tasks/blob/master/C%2B%2B/2017-02-28-tests%26authors-C/2-cross/author/cross-bg.pdf', 'https://raw.githubusercontent.com/TechEducationPlusPlus/Tasks/master/C%2B%2B/2017-02-28-tests%26authors-C/2-cross/tests/', 'cross.*.in', 'cross.*.sol', 'diff', '01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25', '100', '1s', '256M'),
+(4, 'Parallelogram', 'https://github.com/TechEducationPlusPlus/Tasks/blob/master/C%2B%2B/2017-02-28-tests%26authors-C/3-parallelogram/author/parallelogram-bg.pdf', 'https://raw.githubusercontent.com/TechEducationPlusPlus/Tasks/master/C%2B%2B/2017-02-28-tests%26authors-C/3-parallelogram/tests/', 'parallelogram.*.in', 'parallelogram.*.sol', 'diff', '01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20', '100', '1s', '256M');
 
-;
 -- --------------------------------------------------------
 
 --
@@ -235,15 +215,17 @@ CREATE TABLE `Users` (
   `Password` text NOT NULL,
   `Email` text NOT NULL,
   `Name` text NOT NULL,
-  `Admin` tinyint(1) NOT NULL DEFAULT '0'
+  `Teacher` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `Users`
 --
 
-INSERT INTO `Users` (`ID`, `Username`, `Password`, `Email`, `Name`, `Admin`) VALUES
-('0', 'alex_ts', 'a204d95d18da65e6150c2b549aadc3e5', 'alex@techedu.cf', 'Alex Tsvetanov', 0);
+INSERT INTO `Users` (`ID`, `Username`, `Password`, `Email`, `Name`, `Teacher`) VALUES
+('0', 'alex_ts', 'a204d95d18da65e6150c2b549aadc3e5', 'alex@techedu.cf', 'Alex Tsvetanov', 0),
+('1', 'comission', 'a204d95d18da65e6150c2b549aadc3e5', 'commision@admin.vt', 'Comission', 0),
+('', 'alex', 'a204d95d18da65e6150c2b549aadc3e5', 'alex@tsalex.tk', 'Alex Tsvetanov', 0);
 
 --
 -- Indexes for dumped tables
@@ -260,6 +242,22 @@ ALTER TABLE `Certificates`
 --
 ALTER TABLE `Quizes`
   ADD UNIQUE KEY `Link` (`Link`);
+
+--
+-- Indexes for table `Tasks`
+--
+ALTER TABLE `Tasks`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `Tasks`
+--
+ALTER TABLE `Tasks`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

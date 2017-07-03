@@ -27,5 +27,10 @@
 		{
 			return ($this->conn->query ($command));
 		}
+
+		function last_id ()
+		{
+			return $this->conn->insert_id;
+		}
 	}
 ?>

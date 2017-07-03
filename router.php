@@ -40,7 +40,6 @@
 	{
 		include (__DIR__ . "/lib/get/contest.php");
 		print_contest ($_SERVER["REQUEST_URI"]);
-		//echo "Contest is not ready!";
 		return false;
 	}
 	else

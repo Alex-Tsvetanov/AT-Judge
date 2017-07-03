@@ -5,7 +5,7 @@
 
 	$conn = new MySQL ($dbname);
 
-	$sql = "SELECT * FROM Contests WHERE `Homework`=\"0\"";
+	$sql = "SELECT * FROM Contests WHERE `Homework`=1";
 	$result = $conn->query($sql);
 
 	if ($result->num_rows > 0) 
@@ -17,3 +17,4 @@
 	} 
 	unset($conn);
 ?>
+

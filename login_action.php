@@ -33,10 +33,10 @@
 
 	if ($valid)
     {
-        setcookie("name", $name, time() + (86400 * 30), "/");
-        setcookie("email", $email, time() + (86400 * 30), "/");
-        setcookie("username", $ID, time() + (86400 * 30), "/");
-        setcookie("ID", $number, time() + (86400 * 30), "/");
+		$_SESSION['name'] = $name;
+		$_SESSION['email'] = $email;
+		$_SESSION['username'] = $ID;
+		$_SESSION['ID'] = $number;
         header('location: /');
     }
     else

@@ -97,7 +97,12 @@ a.normal:hover{color:#373a3c;}
 }
 .jumbotron {
 	background-image: url("/maia.png");
-	height: 500px;
+	min-height: 500px;
+	color: white;
+}
+.jumbotron.none {
+	background-image: url("/maia.png");
+	min-height: 0px;
 	color: white;
 }
 body {

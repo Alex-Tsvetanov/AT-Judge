@@ -1,0 +1,155 @@
+extends ../../template
+
+block styles_prev
+block styles
+	link(rel='stylesheet', href='//fonts.googleapis.com/css?family=Roboto:300,400,500,700')
+block jumbotron
+	.jumbotron.none
+		.container
+			h1.display-3 Create contest
+			h2.display-3
+				a.btn.btn-raised.btn-default(href="/lib/edit/contest.php") Edit contest
+
+block container
+	.container.white(style="border: 10px solid white;")
+		span#info
+			.row
+				input.form-control(style="font-size:21pt;", type='text', minlength='1', required='', name='contest_name', value='Name of the contest')
+				fieldset.col-md-12
+					legend Choose programming languages
+					div
+						input#c(type='checkbox', name='lang', value='c')
+						label(for='c') &nbsp;C
+					div
+						input#cpp(type='checkbox', name='lang', value='cpp')
+						label(for='cpp') &nbsp;C++
+					div
+						input#py(type='checkbox', name='lang', value='py')
+						label(for='py') &nbsp;Python
+					div
+						input#js(type='checkbox', name='lang', value='js')
+						label(for='js') &nbsp;NodeJS
+			hr
+		.row#tasks
+		.row
+			hr
+			input(type="hidden", name="contest_id", value="-1")
+			.col-md-3
+				button.btn.btn-default.btn-raised#task Add task
+				button.btn.btn-default.btn-raised(onclick="submit();") Create contest
+block js
+	script.
+		$("[name=\"contest_id\"]").val("-1");
+		let num = 0;
+		let tasks = {};
+		function submit ()
+		{
+			let task_points = $('input[name="points"]').map(function(){return $(this).val();});
+			console.log (task_points);
+			let maxp = Object.keys(task_points).reduce(function (res, key) {
+				let val = task_points[key];
+				if (typeof(val) == "string")
+					res += Number(val);
+				console.log (val + " -> " + typeof(val));
+				console.log (res);
+				return res;
+			}, 0);
+			let langs = $("input:checkbox").map(function(){
+				if ($(this).is(":checked"))
+					return $(this).val();
+				else
+					return undefined;
+			}).filter (x => x != undefined).get();
+			$.post('/lib/create/contest_action.php',
+				{ name: $('[name="contest_name"]').val(), tasks: JSON.stringify (tasks), lang: JSON.stringify (langs), id: $("[name=\"contest_id\"]").val(), max_points: maxp },
+				function (data, status) {
+					//alert (data);
+					$("[name=\"contest_id\"]").val(data);
+				}
+			);
+		}
+		function show (i)
+		{
+			console.log($('#' + i).fadeIn(300));
+		}
+		function fadeout (num)
+		{
+			console.log($('#tasks>.col-md-3>span').fadeOut(300));
+			let ser = $('#task' + num + ' :input').serializeArray();
+			//console.log (ser);
+			let params = {};
+			for (let x of $('#task' + num + ' :input').serializeArray())
+			{
+				params [x.name] = x.value;
+				//console.log (params);
+			}
+			//console.log (params);
+			$.post('/lib/create/task_action.php',
+				params,
+				function (data, status) {
+					//alert (data);
+					tasks[params["task_name"]] = data;
+					$("#task" + num + " [name=\"id\"]").val(data);
+				}
+			);
+		}
+		$('button#task').click (function() {
+			/*if ($('#tasks').children().length > 0)
+			{
+				let all_tasks = $('#tasks').children();
+				console.log (all_tasks);
+				let last_task = $(all_tasks[all_tasks.length - 1]);
+				console.log (last_task);
+				let last_task_details = $(last_task.children()[2]);
+				console.log (last_task_details);
+				last_task_details.fadeOut(300);
+				console.log ("fadeout");
+			}*/
+			$('#tasks').html ($('#tasks').html () + 
+			`<div class="col-md-3" class="task" id="task` + num + `">
+				<input id="` + num +`task_name" class="form-control" style="font-size:11pt;" type="text" minlength="1" required="" name="task_name", value="Name of the task">
+				<i class="fa fa-chevron-circle-down" aria-hidden="false" onclick="show(` + num + `);"></i>
+				</input>
+				<span id="` + num + `">
+					<div class="form-group">
+						<input class="form-control" style="font-size:9pt;" type="text" minlength="1" required="" name="description", value="https://">
+						<small class="form-text text-muted">Link to description of the task</small>
+					</div>
+					<div class="form-group">
+						<input class="form-control" style="font-size:9pt;" type="text" minlength="1" required="" name="tests", value="https://">
+						<small class="form-text text-muted">Link to test cases of the task</small>
+					</div>
+					<div class="form-group">
+						<input class="form-control" style="font-size:9pt;" type="text" minlength="1" required="" name="input", value="name.*.in">
+						<input class="form-control" style="font-size:9pt;" type="text" minlength="1" required="" name="output", value="name.*.sol">
+						<small class="form-text text-muted">Pattern string for input and output files</small>
+					</div>
+					<div class="form-group">
+						<select class="form-control" name="checker">
+							<option value="diff" selected="">diff</option>
+						</select>
+						<small class="form-text text-muted">Checker for this task</small>
+					</div>
+					<div class="form-group">
+						<input class="form-control" style="font-size:9pt;" type="text" minlength="1" required="" name="star_notation", value="01,02,03,04,05,06,07,08,09,10">
+						<small class="form-text text-muted">What must be on the place of "*" in file patterns.</small>
+					</div>
+					<div class="form-group">
+						<input class="form-control" style="font-size:9pt;" type="text" minlength="1" required="" name="points" value="100">
+						<small class="form-text text-muted">Max points</small>
+					</div>
+					<div class="form-group">
+						<input class="form-control" style="font-size:9pt;" type="text" minlength="1" required="" name="tl", value="1s">
+						<small class="form-text text-muted">Time Limit</small>
+					</div>
+					<div class="form-group">
+						<input class="form-control" style="font-size:9pt;" type="text" minlength="1" required="" name="ml", value="256M">
+						<small class="form-text text-muted">Memory Limit</small>
+					</div>
+					<input name="id" value="-1" type="hidden">
+					<button class="btn btn-default btn-raised" onclick="fadeout(` + num + `);">Submit</button>
+				</span>
+			</div>`);
+			num ++;
+		});
+

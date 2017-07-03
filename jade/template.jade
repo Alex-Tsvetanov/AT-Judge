@@ -13,6 +13,7 @@ html(lang='en')
 		meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
 		link(rel='icon', href='/favicon.png')
 		title Judge :: TechEdu ++
+		block styles_prev
 		link(href='/css/jumbotron.css', rel='stylesheet')
 		link(rel='stylesheet', href='//fonts.googleapis.com/css?family=Roboto:300,400,500,700')
 		link(rel='stylesheet', href='//fonts.googleapis.com/icon?family=Material+Icons')
@@ -64,25 +65,34 @@ html(lang='en')
 						hr
 						ul.footer-list
 							li
-								a(href='//infocourse.techedu.cf/aboutus.php') About us
+								a(href='//infocourse.techedu.bg/aboutus.php') За нас
 							li
-								a(href='//infocourse.techedu.cf/aboutus.php#trainers') Trainers
+								a(href='//infocourse.techedu.bg/aboutus.php#trainers') Лектори
+							li
+								a(href='//infocourse.techedu.bg/aboutus.php#authors') Автори на проекта
 					li.col-md-3.col-sm-12.col-xs-12.footer-list-wrapper
-						h3.list-title Courses &amp; Seminars
+						h3.list-title Курсове &amp; Семинари
 						hr
 						ul.footer-list
 							li
-								a(href='//infocourse.techedu.cf/trainings/tracks') Tracks
+								a(href='//infocourse.techedu.bg/trainings/tracks') Тракове
 							li
-								a(href='//infocourse.techedu.cf/trainings/courses') Courses
+								a(href='//infocourse.techedu.bg/trainings/courses') Курсове
 							li
-								a(href='//infocourse.techedu.cf/trainings/seminars') Seminars
+								a(href='//infocourse.techedu.bg/trainings/seminars') Семинари
+
 					li.col-md-3.col-sm-12.col-xs-12.footer-list-wrapper
-						h3.list-title Our partners
+						h3.list-title Партньори
 						hr
 						ul.footer-list
 							li
 								a(target='_blank', href='https://delta.bg/') Delta.BG
+							li
+								a(target='_blank', href='http://www.vrexpress.bg/') VR Express
+							li
+								a(target='_blank', href='https://consent.io/') Consent.io
+							li
+								a(target='_blank', href='http://www.igreet.co/') iGreet
 					li.col-md-3.col-sm-12.col-xs-12.footer-list-wrapper
 						ul.social
 							li
@@ -96,8 +106,11 @@ html(lang='en')
 									span.fa.fa-2x.fa-github
 						.all-rights-reserved
 							p &copy; 2017 TechEdu ++
-							p All Rights Reserved.
-							p TechEdu ++ Judge System
+							p Всички права запазени.
+							p 
+								a(rel='license', href='http://creativecommons.org/licenses/by-nc-nd/2.5/in/')
+									img(alt='Creative Commons License', style='border-width:0', src='https://i.creativecommons.org/l/by-nc-nd/2.5/in/88x31.png')
+
 
 		script(src='/js/jquery.min.js')
 		script(src="/js/tether.min.js")
