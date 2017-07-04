@@ -5,6 +5,7 @@
 	$number = "invalid username or email or password";
 	$name = "invalid username or email or password";
 	$email = "invalid username or email or password";
+	$teacher = "invalid username or email or password";
 
 	$dbname = "judge";
 
@@ -24,9 +25,9 @@
 				$ID = $row["Username"];
 				$number = $row["ID"];
 				$valid = ($row["Password"] == md5($_REQUEST["Password"]));
+				$teacher = $row["Teacher"];
 				break;
 			}
-			//echo $row["ID"] . " " . $row["Username"]. " " . $row["Password"] . " " . $row["Email"] . " ". $row["Name"] . "<br>";
 		}
 	} 
 	unset($conn);
@@ -37,6 +38,7 @@
 		$_SESSION['email'] = $email;
 		$_SESSION['username'] = $ID;
 		$_SESSION['ID'] = $number;
+		$_SESSION['teacher'] = $teacher;
         header('location: /');
     }
     else

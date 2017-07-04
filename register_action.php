@@ -39,13 +39,7 @@
 		$result = $conn->query($sql);
 		unset($conn);
 
-        $cookie_name = "name";
-        $cookie_value = $_REQUEST["Name"];
-        setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
-        $cookie_name = "email";
-        $cookie_value = $_REQUEST["Email"];
-        setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
-        header('location: /index.php');
+        header('location: /login.php');
     }
     else
     {
