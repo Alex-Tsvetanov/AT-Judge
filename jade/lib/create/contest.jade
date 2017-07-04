@@ -7,6 +7,11 @@ block styles
 		input, select {
 			text-align: center;
 		}
+		fieldset .col-md-4 {
+			width: 33.33333% !important;
+			display: inline-block;
+		}
+
 block jumbotron
 	.jumbotron.none
 		.container
@@ -18,11 +23,11 @@ block container
 	.container.white(style="border: 10px solid white;")
 		center
 			span#info
-				.row
-					input.form-control(style="mfont-size:21pt;", type='text', minlength='1', required='', name='contest_name', placeholder='Name of the contest')
+				.row.container
+					input.form-control(style="font-size:21pt;", type='text', minlength='1', required='', name='contest_name', placeholder='Name of the contest')
 					fieldset
 						legend Submission types
-						.row
+						.row.col-md-12
 							.col-md-4
 								.pull-right
 									p="C"
@@ -32,7 +37,7 @@ block container
 							.col-md-4
 								.pull-left
 									i.fa.fa-question.text-primary(aria-hidden="true", data-toggle='tooltip', data-placement='right', title='', data-original-title='Allow submission with C code')
-						.row
+						.row.col-md-12
 							.col-md-4
 								.pull-right
 									p="C++"
@@ -42,7 +47,7 @@ block container
 							.col-md-4
 								.pull-left
 									i.fa.fa-question.text-primary(aria-hidden="true", data-toggle='tooltip', data-placement='right', title='', data-original-title='Allow submission with C++ code')
-						.row
+						.row.col-md-12
 							.col-md-4
 								.pull-right
 									p="Python"
@@ -52,7 +57,7 @@ block container
 							.col-md-4
 								.pull-left
 									i.fa.fa-question.text-primary(aria-hidden="true", data-toggle='tooltip', data-placement='right', title='', data-original-title='Allow submission with Python code')
-						.row
+						.row.col-md-12
 							.col-md-4
 								.pull-right
 									p="Node.JS"
