@@ -11,6 +11,12 @@ block styles
 			width: 33.33333% !important;
 			display: inline-block;
 		}
+		.checkbox {
+			display: inline;
+		}
+	
+	link(rel="stylesheet", href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.2.1/css/material.min.css")
+
 
 block jumbotron
 	.jumbotron.none
@@ -33,7 +39,8 @@ block container
 									p="C"
 							.col-md-4
 								.pull-left
-									input(name='lang', value="c", type='checkbox')
+									label.checkbox.checkbox-inline
+										input(name='lang', value="c", type='checkbox')
 							.col-md-4
 								.pull-left
 									i.fa.fa-question.text-primary(aria-hidden="true", data-toggle='tooltip', data-placement='right', title='', data-original-title='Allow submission with C code')
@@ -43,7 +50,8 @@ block container
 									p="C++"
 							.col-md-4
 								.pull-left
-									input(name='lang', value="cpp", type='checkbox')
+									label.checkbox.checkbox-inline
+										input(name='lang', value="cpp", type='checkbox')
 							.col-md-4
 								.pull-left
 									i.fa.fa-question.text-primary(aria-hidden="true", data-toggle='tooltip', data-placement='right', title='', data-original-title='Allow submission with C++ code')
@@ -53,7 +61,8 @@ block container
 									p="Python"
 							.col-md-4
 								.pull-left
-									input(name='lang', value="py", type='checkbox')
+									label.checkbox.checkbox-inline
+										input(name='lang', value="py", type='checkbox')
 							.col-md-4
 								.pull-left
 									i.fa.fa-question.text-primary(aria-hidden="true", data-toggle='tooltip', data-placement='right', title='', data-original-title='Allow submission with Python code')
@@ -63,7 +72,8 @@ block container
 									p="Node.JS"
 							.col-md-4
 								.pull-left
-									input(name='lang', value="js", type='checkbox')
+									label.checkbox.checkbox-inline
+										input(name='lang', value="js", type='checkbox')
 							.col-md-4
 								.pull-left
 									i.fa.fa-question.text-primary(aria-hidden="true", data-toggle='tooltip', data-placement='right', title='', data-original-title='Allow submission with JavaScript code')
@@ -101,6 +111,7 @@ block js
 				else
 					return undefined;
 			}).filter (x => x != undefined).get();
+			alert (langs);
 			$.post('/lib/create/contest_action.php',
 				{ name: $('[name="contest_name"]').val(), tasks: JSON.stringify (tasks), lang: JSON.stringify (langs), id: $("[name=\"contest_id\"]").val(), max_points: maxp },
 				function (data, status) {
@@ -239,3 +250,4 @@ block js
 			num ++;
 			$('[data-toggle="tooltip"]').tooltip();
 		});
+	script(src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.2.1/js/material.min.js")
