@@ -15,7 +15,6 @@ block styles
 			display: inline;
 		}
 	
-	link(rel="stylesheet", href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.2.1/css/material.min.css")
 
 
 block jumbotron
@@ -31,6 +30,8 @@ block container
 			span#info
 				.row.container
 					input.form-control(style="font-size:21pt;", type='text', minlength='1', required='', name='contest_name', placeholder='Name of the contest')
+					input.form-control(style="display: inline;", name='password', value="", type='text', placeholder="Password (not required)")
+					i.fa.fa-question.text-primary(aria-hidden="true", data-toggle='tooltip', data-placement='right', title='', data-original-title='Set password for you contest')
 					fieldset
 						legend Submission types
 						.row.col-md-12
@@ -40,7 +41,7 @@ block container
 							.col-md-4
 								.pull-left
 									label.checkbox.checkbox-inline
-										input(name='lang', value="c", type='checkbox')
+										input(name='lang', value="c", type='checkbox', data-language='C')
 							.col-md-4
 								.pull-left
 									i.fa.fa-question.text-primary(aria-hidden="true", data-toggle='tooltip', data-placement='right', title='', data-original-title='Allow submission with C code')
@@ -51,7 +52,7 @@ block container
 							.col-md-4
 								.pull-left
 									label.checkbox.checkbox-inline
-										input(name='lang', value="cpp", type='checkbox')
+										input(name='lang', value="cpp", type='checkbox', data-language='C++')
 							.col-md-4
 								.pull-left
 									i.fa.fa-question.text-primary(aria-hidden="true", data-toggle='tooltip', data-placement='right', title='', data-original-title='Allow submission with C++ code')
@@ -62,7 +63,7 @@ block container
 							.col-md-4
 								.pull-left
 									label.checkbox.checkbox-inline
-										input(name='lang', value="py", type='checkbox')
+										input(name='lang', value="py", type='checkbox', data-language='Python')
 							.col-md-4
 								.pull-left
 									i.fa.fa-question.text-primary(aria-hidden="true", data-toggle='tooltip', data-placement='right', title='', data-original-title='Allow submission with Python code')
@@ -73,7 +74,7 @@ block container
 							.col-md-4
 								.pull-left
 									label.checkbox.checkbox-inline
-										input(name='lang', value="js", type='checkbox')
+										input(name='lang', value="js", type='checkbox', data-language='Node.JS')
 							.col-md-4
 								.pull-left
 									i.fa.fa-question.text-primary(aria-hidden="true", data-toggle='tooltip', data-placement='right', title='', data-original-title='Allow submission with JavaScript code')
@@ -89,12 +90,17 @@ block js
 	script.
 		$(document).ready(function(){
 			$('[data-toggle="tooltip"]').tooltip();
+			$("[name=\"contest_id\"]").val("-1");
 		});
-		$("[name=\"contest_id\"]").val("-1");
 		let num = 0;
 		let tasks = {};
 		function submit ()
 		{
+			if ($('[name="contest_name"]').val().trim() !== "")
+			{
+				alert("Invalid contest name");
+				return;
+			}
 			let task_points = $('input[name="points"]').map(function(){return $(this).val();});
 			console.log (task_points);
 			let maxp = Object.keys(task_points).reduce(function (res, key) {
@@ -105,15 +111,18 @@ block js
 				console.log (res);
 				return res;
 			}, 0);
-			let langs = $("input:checkbox").map(function(){
+			let langs = Array.from($("input:checkbox").map(function(){
 				if ($(this).is(":checked"))
-					return $(this).val();
+					return {0: $(this).attr("data-language"), 1: $(this).val()};
 				else
 					return undefined;
-			}).filter (x => x != undefined).get();
-			alert (langs);
+			}).filter (x => x != undefined)).reduce(function(a, b) {
+				a[b[1]] = b[0];
+				return a;
+			}, {});
+			//alert (langs);
 			$.post('/lib/create/contest_action.php',
-				{ name: $('[name="contest_name"]').val(), tasks: JSON.stringify (tasks), lang: JSON.stringify (langs), id: $("[name=\"contest_id\"]").val(), max_points: maxp },
+				{ name: $('[name="contest_name"]').val(), password: $('[name="password"]').val(), tasks: JSON.stringify (tasks), lang: JSON.stringify (langs), id: $("[name=\"contest_id\"]").val(), max_points: maxp },
 				function (data, status) {
 					//alert (data);
 					$("[name=\"contest_id\"]").val(data);
@@ -126,7 +135,7 @@ block js
 		}
 		function fadeout (num)
 		{
-			console.log($('form#details${num}').fadeOut(300));
+			console.log($("span#details"+num).fadeOut(300));
 			let ser = $('#task' + num + ' :input').serializeArray();
 			//console.log (ser);
 			let params = {};
@@ -135,13 +144,16 @@ block js
 				params [x.name] = x.value;
 				//console.log (params);
 			}
-			//console.log (params);
+			console.log (params);
+			alert(params);
 			$.post('/lib/create/task_action.php',
 				params,
 				function (data, status) {
 					//alert (data);
+					data = data.trim();
 					tasks[params["task_name"]] = data;
 					$("#task" + num + " [name=\"id\"]").val(data);
+					alert(tasks);
 				}
 			);
 		}
@@ -168,7 +180,7 @@ block js
 			      </div>
 			  </div>
 			  
-			  <form id="details${num}" onsubmit="fadeout(${num});">
+			  <span id="details${num}">
 			    <div class="row form-group">
 			      <div class="col-md-10">
 			        <input style="font-size:9pt;" type="text" minlength="1" required="" name="description" placeholder="https://" class="form-control"/>
@@ -244,8 +256,8 @@ block js
 			      </div>
 			    </div>
 			    <input name="id" value="-1" type="hidden"/>
-			    <input type="submit" class="btn btn-default btn-raised" value="Update details">
-			  </form>
+			    <input type="button" class="btn btn-default btn-raised" value="Update details" onclick="fadeout(${num})">
+			  </span>
 			</div>`);
 			num ++;
 			$('[data-toggle="tooltip"]').tooltip();

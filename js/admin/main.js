@@ -65,9 +65,6 @@ function add_track ()
 {
 	if (PERMISSIONS.createTrack == "allowed")
 		document.getElementById("dialog").innerHTML = `
-			<div class="modal fade" role="dialog" id="createTrack">
-				<div class="modal-dialog">
-					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 							<h4 class="modal-title">Add Track</h4>
@@ -95,9 +92,6 @@ function add_track ()
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 						</div>
-					</div>
-				</div>
-			</div>
 			`;
 	else
 		document.getElementById("dialog").innerHTML = `

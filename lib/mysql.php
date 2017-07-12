@@ -6,7 +6,7 @@
 		private $password = "tts2002";
 		
 		public $dbname;
-		public $conn;
+		protected $conn;
 		
 		function __construct (string $dbname_param)
 		{
@@ -14,6 +14,7 @@
 			$this->conn = new mysqli ($this->servername, $this->username, $this->password, $this->dbname);
 			if ($this->conn->connect_error) 
 			{
+				echo "die";
 				die("Connection failed: " . $this->conn->connect_error);
 			}
 		}

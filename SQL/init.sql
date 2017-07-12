@@ -85,8 +85,7 @@ CREATE TABLE `Contests` (
 INSERT INTO `Contests` (`ID`, `Name`, `Link`, `Tasks`, `Langs`, `MaxPoints`, `Certify`, `Homework`) VALUES
 ('1', 'I/O Stream :: C++', '/contests/1', '{\"Hello, C++\": 1}', '{\"cpp\": \"C++\", \"py\": \"Python\"}', '100', 0, 1),
 ('2', 'First Certificate :: C++', '/contests/2', '{\"Hello, C++\": 1}', '{\"cpp\": \"C++\"}', '100', 1, 0),
-('3', '2017-02-28 C group', '/contests/3', '{\"suma\": 2, \"cross\": 3, \"parallelogram\": 4}', '{\"cpp\": \"C++\"}', '300', 1, 0),
-('513d5a37d248cba5bde73232a9098cd0', 'Name of the contest', '/contests/513d5a37d248cba5bde73232a9098cd0', '{}', '[]', '100', 0, 0);
+('3', '2017-02-28 C group', '/contests/3', '{\"suma\": 2, \"cross\": 3, \"parallelogram\": 4}', '{\"cpp\": \"C++\"}', '300', 1, 0);
 
 -- --------------------------------------------------------
 

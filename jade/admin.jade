@@ -1,0 +1,70 @@
+extends template
+
+block classes
+	- var homeclass = undefined
+	- var contactclass = undefined
+	- var aboutclass = undefined
+
+block styles_prev
+block styles
+	link(rel='stylesheet', href='/css/admin.css')
+	link(rel='stylesheet', href='//fonts.googleapis.com/css?family=Roboto:300,400,500,700')
+	style.
+		input, select {
+			text-align: center;
+		}
+		fieldset .col-md-4 {
+			width: 33.33333% !important;
+			display: inline-block;
+		}
+		.checkbox {
+			display: inline;
+		}
+		.modal .dropdown-menu {  z-index: @zindexDropdown + @zindexModal; }
+		.modal .dropdown.open { *z-index: @zindexDropdown + @zindexModal; }
+		.modal .popover       {  z-index: @zindexPopover  + @zindexModal; }
+		.modal .tooltip       {  z-index: @zindexTooltip  + @zindexModal; }
+	
+
+block jumbotron
+	.jumbotron
+		.container
+			center
+				img(src='/img/acdemy4_logo.png')
+				h1.display-3="We develop new learning methods"
+
+block container
+	.container
+		.panel.panel-primary
+			.panel-heading
+				h4 Contests
+				i
+			.panel-body
+				<?php require ($_SERVER["DOCUMENT_ROOT"] . "/lib/admin/get/contests.php"); ?>
+		.panel.panel-primary
+			.panel-heading
+				h4 Homework
+			.panel-body
+				<?php require ($_SERVER["DOCUMENT_ROOT"] . "/lib/admin/get/homework.php"); ?>
+		.panel.panel-primary
+			.panel-heading
+				h4 Quizes
+			.panel-body
+				<?php require ($_SERVER["DOCUMENT_ROOT"] . "/lib/admin/get/quizes.php"); ?>
+	.container
+		.modal.fade#modalRoot
+			.modal-dialog(role='document')
+				.modal-content#modal
+				//	
+					.modal-header
+						button.close(type='button', data-dismiss='modal', aria-label='Close')
+							span(aria-hidden='true') ×
+						h4.modal-title Modal title
+					.modal-body
+						p One fine body
+					.modal-footer
+						button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+						button.btn.btn-primary(type='button') Save changes
+block js
+	script(src='/js/admin.js')
+
