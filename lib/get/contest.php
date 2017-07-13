@@ -19,6 +19,11 @@
 		{
 			$row = $result->fetch_assoc ();
 			
+			if ($row["Password"] != "" and !isset($_SESSION[$row["Link"]]))
+			{
+				$uri = "/login_contest.php?url=" . urlencode($row["Link"]);
+				echo '<script>window.location.replace("'.$uri.'");window.location.href = "'.$uri.'";</script><a href="' . $uri . '">Login to the contest</a>';
+			}
 			$tasks = json_decode($row["Tasks"], true);
 			$taskbar = '<nav class="navbar navbar-static-top navbar-default"><a href="#" class="navbar-brand">Tasks:</a><ul class="nav navbar-nav">';
 			$tasksoption = '';

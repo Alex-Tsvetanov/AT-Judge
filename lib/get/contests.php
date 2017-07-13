@@ -5,6 +5,7 @@
 
 	$conn = new MySQL ($dbname);
 
+	$conn->query("DELETE FROM `Contests` WHERE `ID`=\"\"");
 	$sql = "SELECT * FROM Contests WHERE `Homework`=\"0\"";
 	$result = $conn->query($sql);
 

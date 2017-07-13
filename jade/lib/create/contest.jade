@@ -22,7 +22,7 @@ block jumbotron
 		.container
 			h1.display-3 Create contest
 			h2.display-3
-				a.btn.btn-raised.btn-default(href="/lib/edit/contest.php") Edit contest
+				a.btn.btn-raised.btn-default(href="/admin.php") Edit contest
 
 block container
 	.container.white(style="border: 10px solid white;")
@@ -124,6 +124,10 @@ block js
 			$.post('/lib/create/contest_action.php',
 				{ name: $('[name="contest_name"]').val(), password: $('[name="password"]').val(), tasks: JSON.stringify (tasks), lang: JSON.stringify (langs), id: $("[name=\"contest_id\"]").val(), max_points: maxp },
 				function (data, status) {
+					if(data == "permission_denied") {
+						alert("Permission denied!");
+						return ;
+					}
 					//alert (data);
 					$("[name=\"contest_id\"]").val(data);
 				}

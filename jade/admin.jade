@@ -37,22 +37,27 @@ block container
 	.container
 		.panel.panel-primary
 			.panel-heading
-				h4 Contests
-				i
+				h4 
+					span="Contests "
+					a.fa.fa-plus(href="/lib/create/contest.php", aria-hidden='true', style="color: white;")
 			.panel-body
 				<?php require ($_SERVER["DOCUMENT_ROOT"] . "/lib/admin/get/contests.php"); ?>
 		.panel.panel-primary
 			.panel-heading
-				h4 Homework
+				h4 
+					span="Homework "
+					i.fa.fa-plus(aria-hidden='true', onclick="create_homework();")
 			.panel-body
 				<?php require ($_SERVER["DOCUMENT_ROOT"] . "/lib/admin/get/homework.php"); ?>
 		.panel.panel-primary
 			.panel-heading
-				h4 Quizes
+				h4 
+					span="Quizes "
+					i.fa.fa-plus(aria-hidden='true', onclick="create_quiz();")
 			.panel-body
 				<?php require ($_SERVER["DOCUMENT_ROOT"] . "/lib/admin/get/quizes.php"); ?>
 	.container
-		.modal.fade#modalRoot
+		.modal.modal-fullscreen.fade#modalRoot
 			.modal-dialog(role='document')
 				.modal-content#modal
 				//	

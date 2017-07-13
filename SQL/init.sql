@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.1
+-- version 4.7.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 03, 2017 at 12:58 PM
+-- Generation Time: Jul 13, 2017 at 09:27 AM
 -- Server version: 10.1.24-MariaDB
 -- PHP Version: 7.1.6
 
@@ -75,17 +75,19 @@ CREATE TABLE `Contests` (
   `Langs` text NOT NULL,
   `MaxPoints` text NOT NULL,
   `Certify` tinyint(2) NOT NULL DEFAULT '0',
-  `Homework` tinyint(1) NOT NULL DEFAULT '0'
+  `Homework` tinyint(1) NOT NULL DEFAULT '0',
+  `Password` text NOT NULL,
+  `Author` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `Contests`
 --
 
-INSERT INTO `Contests` (`ID`, `Name`, `Link`, `Tasks`, `Langs`, `MaxPoints`, `Certify`, `Homework`) VALUES
-('1', 'I/O Stream :: C++', '/contests/1', '{\"Hello, C++\": 1}', '{\"cpp\": \"C++\", \"py\": \"Python\"}', '100', 0, 1),
-('2', 'First Certificate :: C++', '/contests/2', '{\"Hello, C++\": 1}', '{\"cpp\": \"C++\"}', '100', 1, 0),
-('3', '2017-02-28 C group', '/contests/3', '{\"suma\": 2, \"cross\": 3, \"parallelogram\": 4}', '{\"cpp\": \"C++\"}', '300', 1, 0);
+INSERT INTO `Contests` (`ID`, `Name`, `Link`, `Tasks`, `Langs`, `MaxPoints`, `Certify`, `Homework`, `Password`, `Author`) VALUES
+('1', 'I/O Stream :: C++', '/contests/1', '{\"Hello, C++\": 1}', '{\"cpp\": \"C++\", \"py\": \"Python\"}', '100', 0, 1, "", "alex_ts"),
+('2', 'First Certificate :: C++', '/contests/2', '{\"Hello, C++\": 1}', '{\"cpp\": \"C++\"}', '100', 1, 0, "C++Master2017", "alex_ts"),
+('3', '2017-02-28 C group', '/contests/3', '{\"suma\": 2, \"cross\": 3, \"parallelogram\": 4}', '{\"cpp\": \"C++\"}', '300', 1, 0, "", "alex_ts");
 
 -- --------------------------------------------------------
 
@@ -168,10 +170,6 @@ CREATE TABLE `Submissions` (
   `IsEvaluating` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `Submissions`
---
-
 -- --------------------------------------------------------
 
 --
@@ -198,7 +196,7 @@ CREATE TABLE `Tasks` (
 
 INSERT INTO `Tasks` (`ID`, `Name`, `DescriptionLink`, `TestsLink`, `Input`, `Output`, `Checker`, `StarNotation`, `MaxPoints`, `TL`, `ML`) VALUES
 (1, 'Hello, C++', 'https://github.com/TechEducationPlusPlus/Tasks/blob/master/C%2B%2B/IO%20Stream/Hello_C%2B%2B/README.md', 'https://raw.githubusercontent.com/TechEducationPlusPlus/Tasks/master/C%2B%2B/IO%20Stream/Hello_C%2B%2B/tests/', 'hello.*.in', 'hello.*.sol', 'diff', '01', '100', '0.1s', '256M'),
-(2, 'Suma', 'https://github.com/TechEducationPlusPlus/Tasks/blob/master/C%2B%2B/2017-02-28-tests%26authors-C/1-suma/author/suma.pdf', 'https://raw.githubusercontent.com/TechEducationPlusPlus/Tasks/master/C%2B%2B/2017-02-28-tests%26authors-C/1-suma/tests/', 'suma.*.in', 'suma.*.sol', 'diff', '01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20', '100', '1s', '256M'),
+(2, '3Suma', 'https://github.com/TechEducationPlusPlus/Tasks/blob/master/C%2B%2B/2017-02-28-tests%26authors-C/1-suma/author/suma.pdf', 'https://raw.githubusercontent.com/TechEducationPlusPlus/Tasks/master/C%2B%2B/2017-02-28-tests%26authors-C/1-suma/tests/', 'suma.*.in', 'suma.*.sol', '', '01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20', '100', '1s', '256M'),
 (3, 'Cross', 'https://github.com/TechEducationPlusPlus/Tasks/blob/master/C%2B%2B/2017-02-28-tests%26authors-C/2-cross/author/cross-bg.pdf', 'https://raw.githubusercontent.com/TechEducationPlusPlus/Tasks/master/C%2B%2B/2017-02-28-tests%26authors-C/2-cross/tests/', 'cross.*.in', 'cross.*.sol', 'diff', '01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25', '100', '1s', '256M'),
 (4, 'Parallelogram', 'https://github.com/TechEducationPlusPlus/Tasks/blob/master/C%2B%2B/2017-02-28-tests%26authors-C/3-parallelogram/author/parallelogram-bg.pdf', 'https://raw.githubusercontent.com/TechEducationPlusPlus/Tasks/master/C%2B%2B/2017-02-28-tests%26authors-C/3-parallelogram/tests/', 'parallelogram.*.in', 'parallelogram.*.sol', 'diff', '01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20', '100', '1s', '256M');
 
@@ -222,8 +220,7 @@ CREATE TABLE `Users` (
 --
 
 INSERT INTO `Users` (`ID`, `Username`, `Password`, `Email`, `Name`, `Teacher`) VALUES
-('0', 'alex_ts', 'a204d95d18da65e6150c2b549aadc3e5', 'alex@techedu.cf', 'Alex Tsvetanov', 0),
-('1', 'comission', 'a204d95d18da65e6150c2b549aadc3e5', 'commision@admin.vt', 'Comission', 0),
+('0', 'alex_ts', 'a204d95d18da65e6150c2b549aadc3e5', 'alex@tsalex.tk', 'Alex Tsvetanov', 2),
 ('', 'alex', 'a204d95d18da65e6150c2b549aadc3e5', 'alex@tsalex.tk', 'Alex Tsvetanov', 0);
 
 --
@@ -256,7 +253,7 @@ ALTER TABLE `Tasks`
 -- AUTO_INCREMENT for table `Tasks`
 --
 ALTER TABLE `Tasks`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;COMMIT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
