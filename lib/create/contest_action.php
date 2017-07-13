@@ -1,5 +1,5 @@
 <?php
-	if (isset($_SESSION["name"]) == false or $_SESSION["admin"] != "0")
+	if (isset($_SESSION["name"]) == false or $_SESSION["teacher"] == "0")
 	{
 		echo "permission_denied";
 		return;
@@ -10,7 +10,7 @@
 
 	$conn = new MySQL ($dbname);
 
-	$conn->query("DELETE FROM `Contests` WHERE `ID`=\"\"");
+	//$conn->query("DELETE FROM `Contests` WHERE `ID`=\"\"");
 	if ($_POST["id"] != "-1")
 		$conn->query("DELETE FROM `Contests` WHERE `ID`=\"{$_POST["id"]}\"");
 	if ($_POST["id"] == "-1")
