@@ -34,7 +34,7 @@
 			    $num_of_users . '\', \'' . 
 				$_REQUEST["Username"] . 
 				'\', \'' .
-			   	md5 ($_REQUEST["Password"]) .
+			   	password_hash ($_REQUEST["Password"]) .
 			   	'\', \''. $_REQUEST["Email"] . '\', \'' . $_REQUEST ["Name"] . '\')';
 		$result = $conn->query($sql);
 		unset($conn);

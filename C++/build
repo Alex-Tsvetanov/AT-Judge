@@ -1,1 +1,1 @@
-g++ worker.cpp -o worker.exe -lcurl -lcurlpp -pthread -lstdc++fs -lmysqlclient
+g++ worker.cpp -o worker.exe -lcurl -lcurlpp -pthread -lstdc++fs -lmysqlclient -std=c++1z -O4

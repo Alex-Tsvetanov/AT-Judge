@@ -39,8 +39,7 @@
 	else if (substr ($_SERVER["REQUEST_URI"], 0, 10) == '/contests/')
 	{
 		include (__DIR__ . "/lib/get/contest.php");
-		print_contest ($_SERVER["REQUEST_URI"]);
-		return false;
+		return print_contest ($_SERVER["REQUEST_URI"]);
 	}
 	else
 	{

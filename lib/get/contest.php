@@ -1,8 +1,8 @@
 <?php
 	function print_contest (string $link)
 	{
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/lib/mysql.php");
-		include_once ($_SERVER["DOCUMENT_ROOT"] . "/lib/contest_submits.php");
+		include ($_SERVER["DOCUMENT_ROOT"] . "/lib/mysql.php");
+		include ($_SERVER["DOCUMENT_ROOT"] . "/lib/contest_submits.php");
 		$id = substr ($link, 10);
 		$valid = false;
 		$ID = "invalid username or email or password";
@@ -55,14 +55,12 @@
 			unset($langs);
 			unset($html_code);
 			
-			return ;
+			return true;
 		} 
 		else
 		{
-			$html_code = implode ('', file ($_SERVER["DOCUMENT_ROOT"] . '/lib/invalide_page.php'));
-			echo $html_code;
-			unset($html_code);
-			return ;
+			echo "<script>window.location = '/lib/invalide_page.php';</script>";
+			return true;
 		}
 	}
 ?>

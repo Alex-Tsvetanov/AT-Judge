@@ -1,4 +1,6 @@
+#include <future>
 #include <thread>
+#include <chrono>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -22,15 +24,23 @@ MYSQL* con = mysql_init (NULL);
 namespace fs = std::experimental::filesystem;
 #include <regex>
 
-const int concurentThreadsSupported = thread::hardware_concurrency ();
+const int concurentThreadsSupported = 1;
 box* free_boxes;
-bool* is_free_box;
+bool* promises;
+thread** threads;
 
 int getFree ()
 {
 	for (int i = 0 ; i < concurentThreadsSupported ; i ++)
+		if (promises [i])
+		{
+			promises [i] = false;
+			delete threads [i];
+			threads [i] = nullptr;
+		}
+	for (int i = 0 ; i < concurentThreadsSupported ; i ++)
 	{
-		if (free_boxes [i].free () and is_free_box [i])
+		if (threads [i] == nullptr)
 		{
 			return i;
 		}
@@ -42,25 +52,29 @@ const string tl_error = "124\n";//"Time limit exceeded\n";
 const string signal_11 = "11\n";//"Caught fatal signal 11\n";
 const string compile_error = "Compilation error";
 
+ofstream fout ("/tmp/boza");
+
 void eval (submit curr, size_t boxId)
 {
+	promises[boxId] = true;
 	curr.asEvaluating ();
-	is_free_box [boxId] = false;
-	//cout << "KUCHE MRUSNO, BACHKAM" << endl;
+	//fout << "KUCHE MRUSNO, BACHKAM" << endl;
 	try
 	{
-	//cout << "KUCHE MRUSNO, BACHKAM" << endl;
-	//cout << "KUCHE MRUSNO, BACHKAM" << endl;
+	//fout << "KUCHE MRUSNO, BACHKAM" << endl;
+	//fout << "KUCHE MRUSNO, BACHKAM" << endl;
 	const string sourceFile = free_boxes [boxId].getPath (string ("source." + curr.lang).c_str ());
 	
-	//cout << "KUCHE MRUSNO, BACHKAM" << endl;
+	//fout << "KUCHE MRUSNO, BACHKAM" << endl;
 	createSourceFile:
 	{
 		ofstream file (sourceFile.c_str ());
 		file << urlDecode (curr.code) << endl;
-		cout << sourceFile << "\n";
-		cout << urlDecode (curr.code) << endl;
+		fout << sourceFile << "\n";
+		fout << urlDecode (curr.code) << endl;
 	}
+	cout << "Suubmit: " << curr.id << endl;
+	cout << "created" << endl;
 	
 	double points = 0;
 	double percent = 0;
@@ -70,18 +84,19 @@ void eval (submit curr, size_t boxId)
 	CompileSource:
 	{
 		compilelog = free_boxes [boxId].doCommand (langs [curr.lang](free_boxes [boxId].getPath ()));
-		cout << compilelog << "\n-----------------------------\n";
-		cout.flush ();
-		//if (not fs::exists (free_boxes [boxId].getPath ("source.exe")))
-		//{
-		//	skip = true;
-		//	log = "[\"" + compile_error + "\", 0]";
-		//}
+		fout << compilelog << "\n-----------------------------\n";
+		fout.flush ();
+		if (not fs::exists (free_boxes [boxId].getPath ("source.exe")))
+		{
+			skip = true;
+			log = "[\"" + compile_error + "\", 0]";
+		}
 	}
+	cout << "compiled" << endl;
 if (!skip)
 {
 	vector <string> star;
-	//cout << "GetTests" << endl;
+	//fout << "GetTests" << endl;
 	GetTests:
 	{
 		stringstream ss (curr.getTests ());
@@ -93,27 +108,31 @@ if (!skip)
 			star.push_back (substr);
 		}
 	}
+	cout << "got tests" << endl;
 
-	//cout << "Evaluate" << endl;
+	//fout << "Evaluate" << endl;
 	Evaluate:
 	{
+		cout << "evaluating: ";
 		for (auto& x : star)
 		{
-			//cout << "star: " << x << endl;
+			cout << x << " ";
+			cout.flush ();
+			//fout << "star: " << x << endl;
 			string link = curr.task_row [3];
 			string  in = regex_replace (curr.task_row [4], regex ("\\*"), x);
 			string out = regex_replace (curr.task_row [5], regex ("\\*"), x);
-			cout << in << " " << out << "\n";
+			fout << in << " " << out << "\n";
 			{
 				stringstream ss;
-				ss << "curl " << link << "/" << in << " -o " << boxId << "/in; curl " << link << "/" << out << " -o " << boxId << "/outA";
-			//	cout << ss.str () << "\n";
+				ss << "curl --silent \"" << link << "/" << in << "\" -o " << boxId << "/in; curl \"" << link << "/" << out << "\" -o " << boxId << "/outA";
+			//	fout << ss.str () << "\n";
 				system (ss.str ().c_str ());
 			}
 			{
 				stringstream ss;
 				ss << "cp " << boxId << "/in " << free_boxes [boxId].getPath () << "; cp " << boxId << "/outA " << free_boxes [boxId].getPath ();
-			//	cout << ss.str () << "\n";
+			//	fout << ss.str () << "\n";
 				system (ss.str ().c_str ());
 			}
 			string signal;
@@ -134,13 +153,13 @@ if (!skip)
 				{
 					stringstream ss;
 					ss << "http://" << curr.getChecker () << "?type=" << curr.checker [0] << "&link=http%3A%2F%2F" << LINK_JUDGE << "%2FC%2B%2B%2F" << boxId << "&input=in&output1=outA&output2=outB";
-					cout << ss.str () << "\n";
+					fout << ss.str () << "\n";
 					string a;
 					log += (a = GET (ss.str ()));
 					log += ",";
 					a = a.substr (a.find (',') + 1);
 					a.erase (a.size () - 1, 1);
-					//cout << a << "\n";
+					//fout << a << "\n";
 					percent += stod (a);
 				}
 			}
@@ -149,36 +168,57 @@ if (!skip)
 	}
 	percent /= star.size ();
 	points = stod (curr.task_row [8]) * percent;
+	cout << "evaluated" << endl;
 }
 
-	//cout << "Delete" << endl;
+	//fout << "Delete" << endl;
 	Delete:
 	{
-		system (("rm " + sourceFile).c_str ());
-		system (("rm " + string (free_boxes [boxId].getPath ("source.exe"))).c_str ());
-		system (("rm " + string (free_boxes [boxId].getPath ("in"))).c_str ());
-		system (("rm " + string (free_boxes [boxId].getPath ("outA"))).c_str ());
-		system (("rm " + string (free_boxes [boxId].getPath ("outB"))).c_str ());
+		remove ((sourceFile).c_str ());
+		remove ((string (free_boxes [boxId].getPath ("source.exe"))).c_str ());
+		remove ((string (free_boxes [boxId].getPath ("in"))).c_str ());
+		remove ((string (free_boxes [boxId].getPath ("outA"))).c_str ());
+		remove ((string (free_boxes [boxId].getPath ("outB"))).c_str ());
 	}
+	cout << "deleted" << endl;
 	curr.updatePoints (points, "[" + log + "]", url_encode (compilelog));
+	cout << "updated" << endl;
+	cout << "circle" << endl;
 	}
 	catch (exception& e)
 	{
-		cout << "General: " << e.what () << "\n";
+		fout << "General: " << e.what () << "\n";
 	}
-	//cout << "#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=" << endl;
-	is_free_box [boxId] = !false;
+	cout << "circle" << endl;
+	cout << "#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=" << endl;
 }
 
 #include "trim"
+
+bool to_print = true;
+
+void wait_for_free ()
+{
+	to_print = true;
+	while (getFree () == -1)
+	{
+		if (to_print)
+		{
+			cout << "waiting for core ...\n";
+			to_print = false;
+		}
+	}
+	to_print = true;
+}
 
 int main ()
 {
 	LINK_JUDGE = trim (LINK_JUDGE);
 	free_boxes = new box [concurentThreadsSupported];
-	is_free_box = new bool [concurentThreadsSupported];
+	threads = new thread* [concurentThreadsSupported];
+	promises = new bool [concurentThreadsSupported];
 	for (int i = 0 ; i < concurentThreadsSupported ; i ++)
-		is_free_box [i] = true;
+		threads [i] = nullptr;
 	if (con == NULL) 
 	{
 		fprintf (stderr, "%s\n", mysql_error (con));
@@ -191,7 +231,6 @@ int main ()
 		mysql_close (con);
 		throw "Failed";
 	}  
-	bool to_print = true;
 	while (true)
 	{
 		MYSQL_RES *res;
@@ -210,33 +249,28 @@ int main ()
 		}
 		res = mysql_store_result (con);
 
-		//int num_fields = mysql_num_fields (res);
-		while ((row = mysql_fetch_row (res)))
+		if (res != NULL)
 		{
-			to_print = true;
-			while (getFree () == -1)
+			while ((row = mysql_fetch_row (res)))
 			{
-				if (to_print)
-				{
-					cout << "waiting for core ...\n";
-					to_print = false;
-				}
+				//cout << "waiting ..." << endl;
+				//thread wait (wait_for_free);
+				//wait.join ();
+				cout << "Free core + avaible task ...\n";
+				//int free_one = getFree ();
+				//threads [free_one] = new thread (eval, submit (row [0], row [1], row [2], row [3], row [4], row [5]), free_one);
+				//threads [free_one]->detach ();
+				eval (submit (row [0], row [1], row [2], row [3], row [4], row [5]), 0);
 			}
-			to_print = true;
-			cout << "Free core + avaible task ...\n";
-			thread t1 (eval, submit (row [0], row [1], row [2], row [3], row [4], row [5]), getFree ());
-			t1.detach ();
-			system ("sleep 0.5s");
+
+			mysql_free_result (res);
 		}
 		if (to_print)
 		{
 			cout << "no submissions ...\n";
 			to_print = false;
-			system ("sleep 5s");
+			std::this_thread::sleep_for(5s);
 		}
-
-		if(res != NULL)
-			mysql_free_result (res);
 	}
 
 	mysql_close (con);

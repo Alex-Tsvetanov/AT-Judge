@@ -1,4 +1,7 @@
 #include <map>
+#include <functional>
+
+using namespace std;
 
 map <string, function <string(string)> > langs = {
 	{"cpp", 

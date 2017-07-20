@@ -27,7 +27,7 @@ struct submit
 
 			if (mysql_query (con, buffer)) 
 			{
-				mysql_close (con);
+		mysql_close (con);
 			}
 		}
 		res = mysql_store_result (con);
@@ -39,7 +39,7 @@ struct submit
 
 			if (mysql_query (con, buffer)) 
 			{
-				mysql_close (con);
+		mysql_close (con);
 			}
 		}
 		res = mysql_store_result (con);
@@ -47,17 +47,25 @@ struct submit
 	}
 	void updatePoints (int points, string log, string compile)
 	{
+		cout << "UPDATING...." << endl;
 		MYSQL_RES *res;
 		MYSQL_ROW row;
 
+		cout << "UPDATING...." << endl;
+		cout << "UPDATING.... ID = " << id << endl;
+		try
 		{
-			char buffer [1024];
-			sprintf (buffer, "UPDATE `Submissions` SET `CompileLog`='%s', `Log`='%s', `Points`=%d WHERE `ID`=%s", compile.c_str (), log.c_str (), points, id.c_str ());
+			char buffer [1<<13];
+			sprintf (buffer, "UPDATE `Submissions` SET `CompileLog`='%s', `Log`='%s', `Points`='%d' WHERE `ID`='%s'", compile.c_str (), log.c_str (), points, id.c_str ());
+			cout << "UPDATING.... SQL = " << buffer << endl;
 
 			if (mysql_query (con, buffer)) 
 			{
-				mysql_close (con);
+		mysql_close (con);
 			}
+		}
+		catch (...)
+		{
 		}
 		printf ("Update: ID=%s Points=%d Log=\"%s\" Compiler:\"%s\"\n", id.c_str (), points, log.c_str (), compile.c_str ());
 	}
@@ -73,7 +81,7 @@ struct submit
 
 			if (mysql_query (con, buffer)) 
 			{
-				mysql_close (con);
+		mysql_close (con);
 			}
 		}
 

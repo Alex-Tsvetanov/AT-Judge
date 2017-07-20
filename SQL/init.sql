@@ -40,9 +40,6 @@ CREATE TABLE `Certificates` (
 -- Dumping data for table `Certificates`
 --
 
-INSERT INTO `Certificates` (`ID`, `Name`, `Course`, `Score`, `Date`) VALUES
-('1', 'TTS', 'C++', 1000, '12.01.2018');
-
 -- --------------------------------------------------------
 
 --
@@ -106,9 +103,6 @@ CREATE TABLE `Quizes` (
 -- Dumping data for table `Quizes`
 --
 
-INSERT INTO `Quizes` (`ID`, `Link`, `Tasks`, `Name`) VALUES
-('1', '/quiz/1', '1', 'Quiz for TechEdu++');
-
 -- --------------------------------------------------------
 
 --
@@ -124,10 +118,6 @@ CREATE TABLE `QuizResults` (
 --
 -- Dumping data for table `QuizResults`
 --
-
-INSERT INTO `QuizResults` (`UserID`, `QuizID`, `Result`) VALUES
-('alex@techedu.cf', '1', '1'),
-('commision@admin.vt', '1', '1');
 
 -- --------------------------------------------------------
 
@@ -218,10 +208,6 @@ CREATE TABLE `Users` (
 --
 -- Dumping data for table `Users`
 --
-
-INSERT INTO `Users` (`ID`, `Username`, `Password`, `Email`, `Name`, `Teacher`) VALUES
-('0', 'alex_ts', 'a204d95d18da65e6150c2b549aadc3e5', 'alex@tsalex.tk', 'Alex Tsvetanov', 2),
-('', 'alex', 'a204d95d18da65e6150c2b549aadc3e5', 'alex@tsalex.tk', 'Alex Tsvetanov', 0);
 
 --
 -- Indexes for dumped tables
