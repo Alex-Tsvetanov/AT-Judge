@@ -24,7 +24,7 @@
 				$email = $row["Email"];
 				$ID = $row["Username"];
 				$number = $row["ID"];
-				$valid = password_verify($_REQUEST["Password"], $row["Password"]);
+				$valid = md5($_REQUEST["Password"], $row["Password"]);
 				$teacher = $row["Teacher"];
 				break;
 			}

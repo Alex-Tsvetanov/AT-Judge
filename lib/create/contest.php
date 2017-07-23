@@ -19,7 +19,7 @@ let num = 0;
 let tasks = {};
 function submit ()
 {
-	if ($('[name="contest_name"]').val().trim() !== "")
+	if ($('[name="contest_name"]').val().trim() === "")
 	{
 		alert("Invalid contest name");
 		return;
@@ -72,7 +72,7 @@ function fadeout (num)
 		//console.log (params);
 	}
 	console.log (params);
-	alert(params);
+	//alert(params);
 	$.post('/lib/create/task_action.php',
 		params,
 		function (data, status) {
@@ -80,7 +80,7 @@ function fadeout (num)
 			data = data.trim();
 			tasks[params["task_name"]] = data;
 			$("#task" + num + " [name=\"id\"]").val(data);
-			alert(tasks);
+			//alert(tasks);
 		}
 	);
 }
