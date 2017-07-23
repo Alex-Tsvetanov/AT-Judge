@@ -89,7 +89,7 @@ INSERT INTO `Contests` (`ID`, `Name`, `Link`, `Tasks`, `Langs`, `MaxPoints`, `Ce
 ('3', 'Zimen', '/contests/3', '{\"Suma\":\"2\",\"Cross\":\"3\",\"Parallelogram\":\"4\"}', '{\"c\":\"C\",\"cpp\":\"C++\"}', '300', 0, 0, '', 'alex_ts'),
 ('2', 'First Certificate :: C++', '/contests/2', '{\"Hello, C++\":\"1\"}', '{\"cpp\":\"C++\"}', '100', 0, 0, 'C++Masters2017', 'alex_ts'),
 ('4f9d2f6adedfbe3699cdfd3adbd92668', 'Yambol', '/contests/4f9d2f6adedfbe3699cdfd3adbd92668', '{\"Poly\":\"8\",\"Perm\":\"10\",\"Mirrors\":\"15\",\"Mss\":\"17\",\"Fence\":\"20\"}', '{\"c\":\"C\",\"cpp\":\"C++\"}', '500', 0, 0, '', 'alex_ts'),
-('6b72925241b2220253204adfde3556af', 'First steps in programming', '/contests/6b72925241b2220253204adfde3556af', '{\"Hello, World!\":\"22\",\"Expression\":\"24\",\"From 1 to 20\":\"26\",\"Triangle of 55 stars\":\"28\",\"Surface of rectangle\":\"30\"}', '{\"c\":\"C\",\"cpp\":\"C++\",\"py\":\"Python\",\"js\":\"Node.JS\"}', '500', 0, 0, '', 'alex_ts');
+('6b72925241b2220253204adfde3556af', 'First steps in programming', '/contests/6b72925241b2220253204adfde3556af', '{\"Hello, World!\":\"22\",\"Expression\":\"24\",\"From 1 to 20\":\"26\",\"Triangle of 55 stars\":\"28\",\"Surface of rectangle\":\"30\"}', '{\"c\":\"C\",\"cpp\":\"C++\",\"py\":\"Python\",\"js\":\"Node.JS\"}', '500', 0, 1, '', 'alex_ts');
 
 -- --------------------------------------------------------
 
