@@ -24,5 +24,6 @@ block container
 					input#inputEmail.form-control(name="ID", placeholder='Email address', required='', autofocus='', type='email')
 					label.sr-only(for='inputPassword') Password
 					input#inputPassword.form-control(name="Password", placeholder='Password', required='', type='password')
+					<?php if (isset($_REQUEST ["url"])) {echo '<input type="hidden" name="url" value="' . $_REQUEST["url"] . '">';} ?>
 					button.btn.btn-raised.btn-success.btn-block(type='submit') Sign in
 

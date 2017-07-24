@@ -59,7 +59,9 @@
 		} 
 		else
 		{
-			echo "<script>window.location = '/lib/invalide_page.php';</script>";
+			$url = urlencode($_SERVER["REQUEST_URI"]);
+			$location = "/login.php?url={$url}";
+			echo "<script>window.location = \"" . $location . "\";</script>";
 			return true;
 		}
 	}

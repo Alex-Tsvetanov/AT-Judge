@@ -24,7 +24,7 @@
 				$email = $row["Email"];
 				$ID = $row["Username"];
 				$number = $row["ID"];
-				$valid = md5($_REQUEST["Password"], $row["Password"]);
+				$valid = (md5($_REQUEST["Password"]) == $row["Password"]);
 				$teacher = $row["Teacher"];
 				break;
 			}
@@ -39,7 +39,10 @@
 		$_SESSION['username'] = $ID;
 		$_SESSION['ID'] = $number;
 		$_SESSION['teacher'] = $teacher;
-        header('location: /');
+		if(isset($_REQUEST["url"]))
+			header("location: " . urldecode($_REQUEST["url"]));
+		else
+			header("location: /");
     }
     else
     {
