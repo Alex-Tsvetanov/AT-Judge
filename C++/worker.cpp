@@ -8,9 +8,9 @@
 
 using namespace std;
 
-      ifstream HOST_FILE = ifstream ("../HOST");
-      string LINK_JUDGE = string ( (std::istreambuf_iterator<char>(HOST_FILE) ),
-                             (std::istreambuf_iterator<char>()        ) );
+ifstream HOST_FILE = ifstream ("../HOST");
+string LINK_JUDGE = string ( (std::istreambuf_iterator<char>(HOST_FILE) ),
+		(std::istreambuf_iterator<char>()        ) );
 
 MYSQL* con = mysql_init (NULL);
 
@@ -61,135 +61,146 @@ void eval (submit curr, size_t boxId)
 	//fout << "KUCHE MRUSNO, BACHKAM" << endl;
 	try
 	{
-	//fout << "KUCHE MRUSNO, BACHKAM" << endl;
-	//fout << "KUCHE MRUSNO, BACHKAM" << endl;
-	const string sourceFile = free_boxes [boxId].getPath (string ("source." + curr.lang).c_str ());
-	
-	//fout << "KUCHE MRUSNO, BACHKAM" << endl;
-	createSourceFile:
-	{
-		ofstream file (sourceFile.c_str ());
-		file << urlDecode (curr.code) << endl;
-		fout << sourceFile << "\n";
-		fout << urlDecode (curr.code) << endl;
-	}
-	cout << "Suubmit: " << curr.id << endl;
-	cout << "created" << endl;
-	
-	double points = 0;
-	double percent = 0;
-	bool skip = false;
-	string compilelog, log;
+		//fout << "KUCHE MRUSNO, BACHKAM" << endl;
+		//fout << "KUCHE MRUSNO, BACHKAM" << endl;
+		const string sourceFile = free_boxes [boxId].getPath (string ("source." + curr.lang).c_str ());
 
-	CompileSource:
-	{
-		compilelog = free_boxes [boxId].doCommand (langs [curr.lang](free_boxes [boxId].getPath ()));
-		fout << compilelog << "\n-----------------------------\n";
-		fout.flush ();
-		if (not fs::exists (free_boxes [boxId].getPath ("source.exe")))
+		//fout << "KUCHE MRUSNO, BACHKAM" << endl;
+		createSourceFile:
 		{
-			skip = true;
-			log = "[\"" + compile_error + "\", 0]";
+			ofstream file (sourceFile.c_str ());
+			file << urlDecode (curr.code) << endl;
+			fout << sourceFile << "\n";
+			fout << urlDecode (curr.code) << endl;
 		}
-	}
-	cout << "compiled" << endl;
-if (!skip)
-{
-	vector <string> star;
-	//fout << "GetTests" << endl;
-	GetTests:
-	{
-		stringstream ss (curr.getTests ());
+		cout << "Suubmit: " << curr.id << endl;
+		cout << "created" << endl;
 
-		while (ss.good ())
+		double points = 0;
+		double percent = 0;
+		bool skip = false;
+		string compilelog, log;
+
+		CompileSource:
 		{
-			string substr;
-			getline (ss, substr, ',');
-			star.push_back (substr);
+			compilelog = free_boxes [boxId].doCommand (langs [curr.lang](free_boxes [boxId].getPath ()));
+			fout << compilelog << "\n-----------------------------\n";
+			fout.flush ();
+			if (compilelog.find ("error") != string::npos)
+			{
+				skip = true;
+				log = "[\"" + compile_error + "\", 0]";
+			}
 		}
-	}
-	cout << "got tests" << endl;
-
-	//fout << "Evaluate" << endl;
-	Evaluate:
-	{
-		cout << "evaluating: ";
-		for (auto& x : star)
+		cout << "compiled" << endl;
+		cout << "skip = " << skip << endl;
+		if (!skip)
 		{
-			cout << x << " ";
-			cout.flush ();
-			//fout << "star: " << x << endl;
-			string link = curr.task_row [3];
-			string  in = regex_replace (curr.task_row [4], regex ("\\*"), x);
-			string out = regex_replace (curr.task_row [5], regex ("\\*"), x);
-			fout << in << " " << out << "\n";
+			vector <string> star;
+			//fout << "GetTests" << endl;
+			GetTests:
 			{
-				stringstream ss;
-				ss << "curl --silent \"" << link << "/" << in << "\" -o " << boxId << "/in; curl \"" << link << "/" << out << "\" -o " << boxId << "/outA";
-			//	fout << ss.str () << "\n";
-				system (ss.str ().c_str ());
-			}
-			{
-				stringstream ss;
-				ss << "cp " << boxId << "/in " << free_boxes [boxId].getPath () << "; cp " << boxId << "/outA " << free_boxes [boxId].getPath ();
-			//	fout << ss.str () << "\n";
-				system (ss.str ().c_str ());
-			}
-			string signal;
-			{
+				stringstream ss (curr.getTests ());
+
+				while (ss.good ())
 				{
-					stringstream ss;
-					ss << "/php_web/AT-Judge/C++/" 
-					   << boxId << "/outB";
-					signal = free_boxes [boxId].doIsolatedCommand (langs_exec [curr.lang](free_boxes [boxId].getPath ()), string (curr.task_row [9]), string (curr.task_row [10]), string ("in"), ss.str ());
+					string substr;
+					getline (ss, substr, ',');
+					star.push_back (substr);
 				}
+				cout << "got tests " << ss.str() << endl;
 			}
-			{
-				if (signal == tl_error)
-					log += "[\"TL\",0],";
-				else if (signal == signal_11)
-					log += "[\"11\",0],";
-				else
-				{
-					stringstream ss;
-					ss << "http://" << curr.getChecker () << "?type=" << curr.checker [0] << "&link=http%3A%2F%2F" << LINK_JUDGE << "%2FC%2B%2B%2F" << boxId << "&input=in&output1=outA&output2=outB";
-					fout << ss.str () << "\n";
-					string a;
-					log += (a = GET (ss.str ()));
-					log += ",";
-					a = a.substr (a.find (',') + 1);
-					a.erase (a.size () - 1, 1);
-					//fout << a << "\n";
-					percent += stod (a);
-				}
-			}
-		}
-		log.erase (log.size () - 1, 1);
-	}
-	percent /= star.size ();
-	points = stod (curr.task_row [8]) * percent;
-	cout << "evaluated" << endl;
-}
 
-	//fout << "Delete" << endl;
-	Delete:
-	{
-		remove ((sourceFile).c_str ());
-		remove ((string (free_boxes [boxId].getPath ("source.exe"))).c_str ());
-		remove ((string (free_boxes [boxId].getPath ("in"))).c_str ());
-		remove ((string (free_boxes [boxId].getPath ("outA"))).c_str ());
-		remove ((string (free_boxes [boxId].getPath ("outB"))).c_str ());
-	}
-	cout << "deleted" << endl;
-	curr.updatePoints (points, "[" + log + "]", url_encode (compilelog));
-	cout << "updated" << endl;
-	cout << "circle" << endl;
+			//fout << "Evaluate" << endl;
+			Evaluate:
+			{
+				cout << "evaluating: ";
+				for (auto& x : star)
+				{
+					cout << x << " ";
+					cout.flush ();
+					//fout << "star: " << x << endl;
+					string link = curr.task_row [3];
+					string  in = regex_replace (curr.task_row [4], regex ("\\*"), x);
+					string out = regex_replace (curr.task_row [5], regex ("\\*"), x);
+					fout << in << " " << out << "\n";
+					{
+						stringstream ss;
+						ss << "curl --silent \"" << link << "/" << in << "\" -o " << boxId << "/in; curl \"" << link << "/" << out << "\" -o " << boxId << "/outA";
+						//	fout << ss.str () << "\n";
+						system (ss.str ().c_str ());
+					}
+					{
+						stringstream ss;
+						ss << "cp " << boxId << "/in " << free_boxes [boxId].getPath () << "; cp " << boxId << "/outA " << free_boxes [boxId].getPath ();
+						//	fout << ss.str () << "\n";
+						system (ss.str ().c_str ());
+					}
+					string signal;
+					{
+						{
+							stringstream ss;
+							ss << "/php_web/AT-Judge/C++/" 
+								<< boxId << "/outB";
+							cout << ss.str () << endl;
+							signal = free_boxes [boxId].doIsolatedCommand (langs_exec [curr.lang](free_boxes [boxId].getPath ()), string (curr.task_row [9]), string (curr.task_row [10]), string ("in"), ss.str ());
+							cout << signal << endl;
+						}
+					}
+					{
+						if (signal == tl_error)
+							log += "[\"TL\",0],";
+						else if (signal == signal_11)
+							log += "[\"11\",0],";
+						else
+						{
+							stringstream ss;
+							ss << "http://" << curr.getChecker () << "?type=" << curr.checker [0] << "&link=http%3A%2F%2F" << LINK_JUDGE << "%2FC%2B%2B%2F" << boxId << "&input=in&output1=outA&output2=outB";
+							fout << ss.str () << "\n";
+							cout << ss.str () << "\n";
+							cout.flush ();
+							string a;
+							log += (a = GET (ss.str ()));
+							log += ",";
+							fout << a << endl;
+							cout << a << endl;
+							cout.flush ();
+							a = a.substr (a.find (',') + 1);
+							a.erase (a.size () - 1, 1);
+							fout << a << endl;
+							cout << a << endl;
+							cout.flush ();
+							percent += stod (a);
+						}
+					}
+				}
+				log.erase (log.size () - 1, 1);
+			}
+			percent /= star.size ();
+			points = stod (curr.task_row [8]) * percent;
+			cout << "evaluated" << endl;
+		}
+
+		//fout << "Delete" << endl;
+		cout << "deleting..." << endl;
+		Delete:
+		{
+			//remove ((sourceFile).c_str ());
+			//remove ((string (free_boxes [boxId].getPath ("source.exe"))).c_str ());
+			//remove ((string (free_boxes [boxId].getPath ("in"))).c_str ());
+			//remove ((string (free_boxes [boxId].getPath ("outA"))).c_str ());
+			//remove ((string (free_boxes [boxId].getPath ("outB"))).c_str ());
+		}
+		cout << "deleted" << endl;
+		cout << "updating " << points << " " << log << " " << compilelog << endl;
+		curr.updatePoints (points, "[" + log + "]", url_encode (compilelog));
+		cout << "updated " << points << " " << log << " " << compilelog << endl;
 	}
 	catch (exception& e)
 	{
 		fout << "General: " << e.what () << "\n";
 	}
-	cout << "circle" << endl;
+	cout << "finishing..." << endl;
 	cout << "#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=#=" << endl;
 }
 

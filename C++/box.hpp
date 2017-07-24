@@ -68,7 +68,7 @@ struct box
 		//ss << "isolate --box-id=" << this->id << " " << options << " --run -- " << cmd << " 2> " << string (this->getPath ("log"));
 		//ss << "docker run --cidfile=" << this->getPath ("cid") << " -v " << this->getPath () << ":/foo -w /foo -i --read-only -m " << memorylimit << " --network none alex/atjudgeimage /bin/bash -c \'cat " << in << " | timeout " << timelimit << " " << cmd << "\' > " << out << " ; echo \"$?\" > log ; echo \"y\" | rm " << this->getPath ("cid");
 		ss << "docker run -v " << this->getPath () << ":/foo -w /foo -i --read-only -m " << memorylimit << " --network none alex/atjudgeimage /bin/bash -c \'cat " << in << " | timeout " << timelimit << " " << cmd << "\' > " << out << " ; echo \"$?\" > log ;";
-		//cout << ss.str () << " -> isolation command\n";
+		cout << ss.str () << " -> isolation command\n";
 		cmd = ss.str ();
 		system (cmd.c_str ());
 		is_free = true;
