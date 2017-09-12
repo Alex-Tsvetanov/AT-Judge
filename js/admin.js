@@ -325,10 +325,12 @@ let update = function() {
 			return false;
 		}
 
-		let tasks = Array.from($('.task input[name="id"]').map(function() {
-				let _id = $(this).val();
-				//console.log($("#task" + _id + " input[name=\"task_name\"]").val() + "\n" + _id);
-				return {0: $("#task" + _id + " input[name=\"task_name\"]").val(), 1: _id};
+		let tasks = Array.from($('.task input[name="id"]').map(function(a, x) {
+				let _id = $(x).val();
+				console.log(x);
+				console.log($(x));
+				console.log($("#task_name" + _id).val() + "\n" + _id);
+				return {0: $("#task_name" + _id).val(), 1: _id};
 		})).reduce(function(a, b) {
 			a[b[0]] = b[1];
 			return a;
@@ -468,7 +470,7 @@ let add = function() {
 							<i aria-hidden="true" class="fa fa-question text-primary" data-toggle="tooltip" data-placement="right" title="" data-original-title="Memory limit for the task"></i>
 						  </div>
 						</div>
-						<input name="id" value="-1" type="hidden"/>
+						<input name="id" value="${num}" type="hidden"/>
 						<div class="row form-group">
 						  <div class="col-md-10">
 							<input class="btn btn-default btn-raised" value="Update task" onclick="update.task(${num})" type="button">

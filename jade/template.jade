@@ -52,7 +52,7 @@ html(lang='en')
 						li.nav-item(class=typeof registerclass === "undefined" ? "" : "active")
 							a.nav-link(href='/register.php') Register
 						li.nav-item(class=typeof homeclass === "undefined" ? "" : "active", style="border-right: rgba(0,0,0,0) solid 20px;")
-							a.nav-link(href='/user.php') 
+							a.nav-link(href='#')
 								|<?php if (isset($_SESSION ["name"])) { echo "Hi, "; echo $_SESSION ["name"]; } else { echo "Hi"; } ?>
 		block jumbotron
 			
