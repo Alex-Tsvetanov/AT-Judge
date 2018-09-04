@@ -32,6 +32,14 @@ map <string, function <string(string)> > langs = {
 			return "";
 		}
 	},
+	{"java",
+
+		[](string path)
+		{
+			path += "source.java";
+			return "sed -i -r '0,/public class ([a-zA-Z_$][a-zA-Z_$0-9]*)(.*)/s/public class ([a-zA-Z_$][a-zA-Z_$0-9]*)(.*)/public class source\\2/' " + path + " && javac " + path;
+		}
+	},
 };
 
 map <string, function <string(string)> > langs_exec = {
@@ -61,6 +69,13 @@ map <string, function <string(string)> > langs_exec = {
 		[](string path)
 		{
 			return "node source.js";
+		}
+	},
+	{"java",
+
+		[](string path)
+		{
+			return "java source";
 		}
 	},
 };

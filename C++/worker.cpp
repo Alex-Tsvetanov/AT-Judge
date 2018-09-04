@@ -9,6 +9,7 @@
 using namespace std;
 
 ifstream HOST_FILE = ifstream ("../HOST");
+const string path = "/home/alex/github/AT-Judge/";
 string LINK_JUDGE = string ( (std::istreambuf_iterator<char>(HOST_FILE) ),
 		(std::istreambuf_iterator<char>()        ) );
 
@@ -73,7 +74,7 @@ void eval (submit curr, size_t boxId)
 			fout << sourceFile << "\n";
 			fout << urlDecode (curr.code) << endl;
 		}
-		cout << "Suubmit: " << curr.id << endl;
+		cout << "Submit: " << curr.id << endl;
 		cout << "created" << endl;
 
 		double points = 0;
@@ -83,6 +84,7 @@ void eval (submit curr, size_t boxId)
 
 		CompileSource:
 		{
+			cout << "Compile: " << langs [curr.lang](free_boxes [boxId].getPath ()) << endl;
 			compilelog = free_boxes [boxId].doCommand (langs [curr.lang](free_boxes [boxId].getPath ()));
 			fout << compilelog << "\n-----------------------------\n";
 			fout.flush ();
@@ -140,7 +142,7 @@ void eval (submit curr, size_t boxId)
 					{
 						{
 							stringstream ss;
-							ss << "/php_web/AT-Judge/C++/" 
+							ss << path << "C++/" 
 								<< boxId << "/outB";
 							cout << ss.str () << endl;
 							signal = free_boxes [boxId].doIsolatedCommand (langs_exec [curr.lang](free_boxes [boxId].getPath ()), string (curr.task_row [9]), string (curr.task_row [10]), string ("in"), ss.str ());

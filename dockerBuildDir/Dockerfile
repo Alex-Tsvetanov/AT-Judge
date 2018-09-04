@@ -1,17 +1,7 @@
-FROM ubuntu:14.04
+FROM base/devel
 
-RUN ["/bin/bash", "-c", "apt-get update"]
-RUN ["/bin/bash", "-c", "apt-get install -y software-properties-common"]
-
-RUN ["/bin/bash", "-c", "add-apt-repository ppa:webupd8team/java && apt-get update"]
-
-RUN echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections
-RUN echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 seen true" | debconf-set-selections
-
-RUN apt-get install -y oracle-java8-installer
-
-RUN apt-get install -y curl
-RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-RUN apt-get install -y nodejs
-RUN apt-get install -y python
-
+RUN ["/bin/bash", "-c", "pacman -Sy"]
+RUN ["/bin/bash", "-c", "pacman --noconfirm -S python2 python nodejs gcc jre8-openjdk"]
+RUN ["/bin/bash", "-c", "archlinux-java status"]
+RUN ["/bin/bash", "-c", "archlinux-java get"]
+RUN ["/bin/bash", "-c", "archlinux-java set java-8-openjdk/jre"]
